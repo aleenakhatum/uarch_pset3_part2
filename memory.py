@@ -26,12 +26,19 @@ def load_mem_file(mem, mem_file):
             byte_list = hex_str.split()
             for i in byte_list:
                 if broken_line:
-                    bytes_num = len(prev_line) + 1
-                    mem[prev_addr_num + bytes_num] = i
-                    broken_line = False
+                    break
                 else:
                     mem[addr_num] = i
                     addr_num += 1
+            
+            if broken_line:
+                count = 0
+                for b in reversed(byte_list):
+                    bytes_num = len(prev_line) 
+                    blah = prev_addr_num + bytes_num + count
+                    mem[prev_addr_num + bytes_num + count] = b
+                    count += 1
+                    broken_line = False
             prev_line = byte_list
 
             with open("mem_dump.txt", "w") as dump:

@@ -106,8 +106,6 @@ def imm_bytes(opcode, ext_opcode, operand_size_prefix, imm_type):
     
 def predecode(instr_str, eip, instr_cnt, dump_file=None):
 
-    print("INSIDE PREDECODE")
-
     #Initialize all Ouput Registers
     if isinstance(instr_str, (bytes, bytearray)):
         has_spaces = False  # bytes never contain spaces
@@ -115,7 +113,6 @@ def predecode(instr_str, eip, instr_cnt, dump_file=None):
         has_spaces = " " in instr_str
 
     instr = format_instr_in(instr_str, has_spaces) #Autodetect if test has spaces
-
     prefix_mux = [0, 0, 0] 
     ext_opcode = 0
     opcode = 0x00 #byte
@@ -285,36 +282,23 @@ def decode(mem, eip):
         if eip not in mem:
             greater_keys = [addr for addr in mem.keys() if addr > eip]
             if not greater_keys:
-                print(f"No more instructions after {hex(eip)}")
+                #print(f"No more instructions after {hex(eip)}")
                 break
             
             eip = min(greater_keys)
-            print(f"Jumping to next instruction at {hex(eip)}")
-        else: 
-            print("eip in mem")
+            #print(f"Jumping to next instruction at {hex(eip)}")
+        #else: 
+            #print("eip in mem")
         
         #decode all instructions
         sorted_addrs = sorted(mem.keys())
         instr_str = bytes(int(mem[addr], 16) for addr in sorted_addrs)
         formatted_instr_str = " ".join(f"{b:02x}" for b in instr_str)
-        print("Now decoding: ", formatted_instr_str)
         decoded = predecode(formatted_instr_str, eip, instr_cnt, dump_file=dump_file)
-        print("DECODED", decoded)
         instrs.append(decoded)
         eip = decoded.eip_new
-            
 
-    #     instr_len = predecode(instr_str, eip, instr_cnt, dump_file=dump_file)
-    #     print("INSTRUCTION COUNT: ", instr_cnt, "length: ", instr_len)
-
-    #     if instr_len <= 0:
-    #         print(f"Error decoding at position {eip}")
-    #         break
-            
-    #     eip += instr_len
-        #print(" new eip: ", hex(eip))
-
-    return instr_cnt
+    return instrs
 
 
 
