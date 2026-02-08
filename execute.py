@@ -1,0 +1,7 @@
+# exec_ADD(...)
+# exec_MOV(...)
+# exec_XCHG(...)
+# exec_CMPXCHG(...)
+# exec_JMP(...)
+# exec_JNE(...)
+# exec_HLT(...)
