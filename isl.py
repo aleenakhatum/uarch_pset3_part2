@@ -16,6 +16,10 @@ def main():
         return
 
     print("Run Successful")
+    with open("results.txt", "w") as f:
+        f.write("START OF SIMULATION TRACE\n")
+        f.write("="*60 + "\n\n")
+
     mem_file = sys.argv[1]
 
     mem = {}
@@ -24,10 +28,10 @@ def main():
     eip = 0
     instrs_decoded = decode(mem, eip)
 
-    # while True:
-    #     EIP = 0x0000
-    #     instr = decode(mem, EIP)
-    #     execute(instr, state, mem)
+    state = Registers()
+    for instr in instrs_decoded:
+        execute(instr, state, mem)
+        write_results(state, mem, "results.txt")
 
     #     dump_state_to_results()
 

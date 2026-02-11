@@ -44,9 +44,9 @@ def disp_bytes(modrm, sib_byte):
 
     if mod == 0b01:
         return 1      # disp8
-    if mod == 0b10 or (mod == 0b00 and sib == 0b101) or (mod == 0b00 and rm == 0b101):
+    if mod == 0b10 or (mod == 0b00 and sib == 0b101 and rm == 0b100) or (mod == 0b00 and rm == 0b101):
         return 4      # disp32
-    if mod == 0b00 and rm == 0b101:
+    if mod == 0b00 and rm == 0b100:
         return 4      # disp32
     return 0          # no displacement
 
@@ -173,7 +173,6 @@ def predecode(instr_str, eip, instr_cnt, dump_file=None):
         i += 1
         length += 1
     elif (disp_size == 4):
-        print("i", i)
         b0 = instr[i]
         i += 1
         length += 1
@@ -287,16 +286,16 @@ def decode(mem, eip):
             
             eip = min(greater_keys)
             #print(f"Jumping to next instruction at {hex(eip)}")
-        #else: 
+        else: 
             #print("eip in mem")
         
-        #decode all instructions
-        sorted_addrs = sorted(mem.keys())
-        instr_str = bytes(int(mem[addr], 16) for addr in sorted_addrs)
-        formatted_instr_str = " ".join(f"{b:02x}" for b in instr_str)
-        decoded = predecode(formatted_instr_str, eip, instr_cnt, dump_file=dump_file)
-        instrs.append(decoded)
-        eip = decoded.eip_new
+            #decode all instructions
+            sorted_addrs = sorted(mem.keys())
+            instr_str = bytes(int(mem[addr], 16) for addr in sorted_addrs)
+            formatted_instr_str = " ".join(f"{b:02x}" for b in instr_str)
+            decoded = predecode(formatted_instr_str, eip, instr_cnt, dump_file=dump_file)
+            instrs.append(decoded)
+            eip = decoded.eip_new
 
     return instrs
 

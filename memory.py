@@ -45,19 +45,51 @@ def load_mem_file(mem, mem_file):
                 for addr, byte in sorted(mem.items()):
                     dump.write(f"{addr:08X}: {byte}\n")
 
-# def read8(mem, addr):
-#     byte = mem[addr]
-#     return {}
+def read_mem_word(mem, addr, size):
+    """Read a value from memory dictionary as integer (little-endian)."""
+    bytes_ = []
+    for i in range(size):
+        b = mem.get(addr + i, "00")
+        bytes_.append(int(b, 16))
+    return int.from_bytes(bytes_, "little")
+
+def write_mem_word(mem, addr, value, size):
+    """Write integer value into memory (little-endian)."""
+    b = value.to_bytes(size, "little")
+    for i in range(size):
+        mem[addr + i] = f"{b[i]:02X}"
+
+def read8(mem, addr):
+    value = int(mem.get(addr, "00"), 16)   # get byte or default 0
+    return value & 0xFF
 
 
-#def read16(mem, addr):
+def read16(mem, addr):
+    b0 = int(mem.get(addr, "00"), 16)
+    b1 = int(mem.get(addr + 1, "00"), 16)
+    return (b1 << 8) | b0
 
-#def read32(mem, addr):
+def read32(mem, addr):
+    b0 = int(mem.get(addr, "00"), 16)
+    b1 = int(mem.get(addr + 1, "00"), 16)
+    b2 = int(mem.get(addr + 2, "00"), 16)
+    b3 = int(mem.get(addr + 3, "00"), 16)
 
-#def write8(mem, addr, val):
+    return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0
 
-#def write16(mem, addr, val):
+def write8(mem, addr, val):
+    mem[addr] = f"{val & 0xFF:02X}"
 
-#def write32(mem, addr, val):
+def write16(mem, addr, val):
+    write8(mem, addr, val)
+    write8(mem, addr + 1, val >> 8)
+
+def write32(mem, addr, val):
+    write8(mem, addr, val)
+    write8(mem, addr + 1, val >> 8)
+    write8(mem, addr + 2, val >> 16)
+    write8(mem, addr + 3, val >> 24)
+
+
 
                 
