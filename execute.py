@@ -14,13 +14,12 @@ MOV_OPCODES = (
 )
 
 XCHG_OPCODE = 0x86
-CMPXCHG_OPCODE = 0x0F # CMPXCHG is usually 0x0F 0xB1
+CMPXCHG_OPCODE = 0xB1 # CMPXCHG is usually 0x0F 0xB1
 JMP_OPCODE = 0xEA
 JNE_OPCODE = 0x75 # Your test case uses 0x75 (JNE short)
 HLT_OPCODE = 0xF4
 
 def exec_ADD(instr, state, mem):
-    print("add")
     op = instr.opcode
     size = get_operand_size(op, instr.prefix_mux)
     mod, reg, rm = decode_modrm(instr.modrm) if instr.modrm is not None else (0,0,0)
@@ -52,7 +51,6 @@ def exec_ADD(instr, state, mem):
     # 2. Compute result and update flags
     # IMPORTANT: Keep 'result' unmasked here so update_flags can see the carry
     result = dest_val + src_val
-    print("res add", result)
     update_flags(state.flags, dest_val, src_val, result, size, "add")
 
     # 3. Writeback (Masking happens HERE)
@@ -67,7 +65,6 @@ def exec_ADD(instr, state, mem):
     state.eip = instr.eip_new
     
 def exec_MOV(instr, state, mem):
-    print("mov")
     op = instr.opcode
     size = get_operand_size(op, instr.prefix_mux)
     
@@ -103,7 +100,6 @@ def exec_MOV(instr, state, mem):
     state.eip = instr.eip_new
 
 def exec_XCHG(instr, state, mem):
-    print("xchng")
     # Assignment specifies XCHG r/m8, r8 (0x86)
     mod, reg, rm = decode_modrm(instr.modrm)
     val_r = get_reg_val(state, reg, 1)
@@ -120,29 +116,38 @@ def exec_XCHG(instr, state, mem):
     state.eip = instr.eip_new
 
 def exec_CMPXCHG(instr, state, mem):
-    print("cmpxcng")
-    # CMPXCHG r/m, r is usually a 2-byte opcode: 0x0F 0xB1
-    # Check if your decoder passes 0xB1 as the opcode
+    # 1. Decode operands
     mod, reg, rm = decode_modrm(instr.modrm)
-    size = get_operand_size(0xB1, instr.prefix_mux) # Usually 16/32 bit
+    # Note: 0xB0 is 8-bit, 0xB1 is 16/32-bit. Ensure size is handled.
+    size = get_operand_size(instr.opcode, instr.prefix_mux) 
     
-    # Accumulator is AL, AX, or EAX
+    # 2. Get values
+    # Accumulator is index 0 (AL/AX/EAX)
     acc_val = get_reg_val(state, 0, size)
     
     addr = None if mod == 0b11 else calc_effective_addr(instr, state)
     dest_val = get_reg_val(state, rm, size) if mod == 0b11 else read_mem(mem, addr, size)
-    
+    src_val = get_reg_val(state, reg, size)
+
+    # 3. Perform Comparison for Flags
+    # CMPXCHG flags are set as if a CMP (subtraction) occurred: acc_val - dest_val
+    temp_res = acc_val - dest_val
+
+    # This will set ZF=1 if (acc_val - dest_val) & 0xFFFF == 0
+    update_flags(state.flags, acc_val, dest_val, temp_res, size, op="sub")
+    update_flags(state.flags, acc_val, dest_val, temp_res, size, op="sub")
+
+    # 4. Conditional Exchange
     if acc_val == dest_val:
-        state.flags["ZF"] = 1
-        src_val = get_reg_val(state, reg, size)
+        # ZF is already set to 1 by update_flags because result is 0
         if mod == 0b11:
             write_reg_val(state, rm, src_val, size)
         else:
             write_mem(mem, addr, src_val, size, state)
     else:
-        state.flags["ZF"] = 0
-        write_reg_val(state, 0, dest_val, size) # Load dest into Accumulator
-        
+        # ZF is already 0. Load destination into accumulator.
+        write_reg_val(state, 0, dest_val, size) 
+
     state.eip = instr.eip_new
 
 def exec_JMP(instr, state, mem):
@@ -150,12 +155,10 @@ def exec_JMP(instr, state, mem):
     # This jump sets both CS and EIP. 
     # Your decoder should have extracted the 6 bytes: [4 bytes offset][2 bytes selector]
     # Assuming your decoder put the 32-bit offset in instr.imm and selector in instr.disp
-    print("jmp")
     state.eip = instr.imm
     state.cs = instr.disp & 0xFFFF
 
 def exec_JNE(instr, state, mem):
-    print("jne")
     # Test case uses 0x75 (short jump). 
     # If ZF is 0, add sign-extended displacement to EIP
     if state.flags["ZF"] == 0:
@@ -174,14 +177,14 @@ def execute(instr, state, mem):
         case _ if op in ADD_OPCODES:
             exec_ADD(instr, state, mem)
 
+        case _ if op == CMPXCHG_OPCODE and instr.ext_opcode == 1:
+            exec_CMPXCHG(instr, state, mem)
+
         case _ if op in MOV_OPCODES:
             exec_MOV(instr, state, mem)
 
         case _ if op == XCHG_OPCODE:
             exec_XCHG(instr, state, mem)
-
-        case _ if op == CMPXCHG_OPCODE:
-            exec_CMPXCHG(instr, state, mem)
 
         case _ if op == JMP_OPCODE:
             exec_JMP(instr, state, mem)

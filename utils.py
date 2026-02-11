@@ -15,46 +15,52 @@ def decode_modrm(modrm_byte):
     rm  = modrm_byte & 0b111
     return mod, reg, rm
 
-def get_reg_val(state, index, size):
-    # Map for 32-bit names
-    reg_name = REG32[index] # e.g., "eax", "ecx"
-    full_val = getattr(state, reg_name)
+def get_reg_val(state, reg_idx, size):
+    # Standard x86 GPR mapping
+    names = ["eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"]
+    reg_name = names[reg_idx]
     
-    if size == 4:
-        return full_val & 0xFFFFFFFF
-    if size == 2:
-        return full_val & 0xFFFF
-    if size == 1:
-        # index 0-3 are AL, CL, DL, BL
-        if index < 4:
-            return full_val & 0xFF
-        # index 4-7 are AH, CH, DH, BH (the second byte of EAX, ECX, etc.)
-        else:
-            return (getattr(state, REG32[index-4]) >> 8) & 0xFF
-            
-    return full_val
+    # Use getattr to pull the value from the class attribute (e.g., state.eax)
+    val = getattr(state, reg_name)
 
-def write_reg_val(state, index, val, size):
-    reg_name = REG32[index]
-    current_val = getattr(state, reg_name)
+    if size == 1:
+        return val & 0xFF        # AL, CL, DL, BL...
+    if size == 2:
+        return val & 0xFFFF      # AX, CX, DX, BX...
+    return val & 0xFFFFFFFF      # EAX, ECX, EDX, EBX...
+
+def write_reg_val(state, reg_idx, val, size):
+    names = ["eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"]
+    reg_name = names[reg_idx]
     
     if size == 4:
         setattr(state, reg_name, val & 0xFFFFFFFF)
     elif size == 2:
-        new_val = (current_val & 0xFFFF0000) | (val & 0xFFFF)
+        # Preserve upper 16 bits of the 32-bit register
+        current = getattr(state, reg_name)
+        new_val = (current & 0xFFFF0000) | (val & 0xFFFF)
         setattr(state, reg_name, new_val)
     elif size == 1:
-        if index < 4: # AL, CL, DL, BL
-            new_val = (current_val & 0xFFFFFF00) | (val & 0xFF)
-            setattr(state, reg_name, new_val)
-        else: # AH, CH, DH, BH
-            new_val = (current_val & 0xFFFF00FF) | ((val & 0xFF) << 8)
-            setattr(state, REG32[index-4], new_val)
-
+        # Preserve upper 24 bits
+        current = getattr(state, reg_name)
+        new_val = (current & 0xFFFFFF00) | (val & 0xFF)
+        setattr(state, reg_name, new_val)
+        
 def read_mem(mem, addr, size):
     res = 0
     for i in range(size):
-        res |= int(mem.get(addr + i, "00"), 16) << (8 * i)
+        current_addr = addr + i
+        
+        # If the address is missing, initialize it to "00"
+        if current_addr not in mem:
+            mem[current_addr] = "00"
+            
+        # Get the value (now guaranteed to exist)
+        val_str = mem[current_addr]
+        
+        # Convert hex string to int and shift it into the correct byte position
+        res |= int(val_str, 16) << (8 * i)
+        
     return res
 
 def write_mem(mem, addr, val, size, state):
@@ -65,45 +71,33 @@ def write_mem(mem, addr, val, size, state):
         state.modified_mem.add(phys_addr)
 
 def update_flags(flags, a, b, res, size, op="add"):
-    #Reset
-    flags["CF"] = 0
-    flags["PF"] = 0
-    flags["AF"] = 0
-    flags["ZF"] = 0
-    flags["SF"] = 0
-    flags["DF"] = 0
-    flags["OF"] = 0
-
+    # 1. Setup Masks
     mask = (1 << (size * 8)) - 1
     sign_bit = 1 << (size * 8 - 1)
     
-    # Ensure operands are masked to the current operation size
     a_m = a & mask
     b_m = b & mask
     res_m = res & mask
-    print("resm", res_m)
 
-    # Zero Flag
     flags["ZF"] = 1 if res_m == 0 else 0
-    
-    # Sign Flag
     flags["SF"] = 1 if (res_m & sign_bit) else 0
 
+    lsb = res_m & 0xFF
+    flags["PF"] = 1 if (bin(lsb).count('1') % 2 == 0) else 0
+
+    flags["AF"] = 1 if ((a_m ^ b_m ^ res_m) & 0x10) else 0
+
     if op == "add":
-        # Carry Flag: Did the sum exceed the mask?
-        flags["CF"] = 1 if res > mask else 0
+        flags["CF"] = 1 if res_m < a_m else 0 # Or: (res > mask)
         
-        # Overflow Flag: (a and b have same sign) AND (result has different sign)
-        # Using your logic but with the cleaned/masked operands:
         flags["OF"] = 1 if ((a_m ^ res_m) & (b_m ^ res_m) & sign_bit) else 0
 
     elif op == "sub" or op == "cmp":
-        # Carry Flag for Subtraction is a "Borrow"
         flags["CF"] = 1 if a_m < b_m else 0
-        
-        # Overflow Flag for Subtraction
         flags["OF"] = 1 if ((a_m ^ b_m) & (a_m ^ res_m) & sign_bit) else 0
-        
+    
+    return flags
+
 def get_segment_for_instr(rm_index, prefix_mux, state):
     """
     Determines which segment register to use based on the base register 
@@ -169,7 +163,7 @@ def get_operand_size(opcode, prefix_mux):
         return 4  # 32-bit (Double Word)
     
 
-def write_results(state, mem, filename="results.txt"):
+def write_results1(state, mem, filename="results.txt"):
     """
     Formats the CPU state and modified memory into a clear, tabular view.
     Appends to results.txt.
@@ -220,3 +214,56 @@ def write_results(state, mem, filename="results.txt"):
                 printed_rows.add(base_addr)
         
         f.write("\n" + "="*60 + "\n\n")
+
+def write_results(state, mem, filename="results.txt"):
+    """
+    Formats the CPU state and modified memory into the requested compact view.
+    Appends to results.txt.
+    """
+    with open(filename, "a") as f:
+        # Instruction Pointer
+        f.write(f"EIP: {state.eip:08X}\n")
+
+        # General Purpose Registers
+        f.write(f"EAX: {state.eax:08X} EBX: {state.ebx:08X} ECX: {state.ecx:08X} EDX: {state.edx:08X}\n")
+        f.write(f"ESP: {state.esp:08X} EBP: {state.ebp:08X} ESI: {state.esi:08X} EDI: {state.edi:08X}\n")
+
+        # MMX Registers (All on one line as requested)
+        mm_regs = [
+            f"MM0:{state.mm0:016X}", f"MM1:{state.mm1:016X}", f"MM2:{state.mm2:016X}", f"MM3:{state.mm3:016X}",
+            f"MM4:{state.mm4:016X}", f"MM5:{state.mm5:016X}", f"MM6:{state.mm6:016X}", f"MM7:{state.mm7:016X}"
+        ]
+        f.write(" ".join(mm_regs) + "\n")
+
+        # Segment Registers
+        f.write(f"CS: {state.cs:04X} DS: {state.ds:04X} ES: {state.es:04X} FS: {state.fs:04X} GS: {state.gs:04X} SS: {state.ss:04X}\n")
+
+        # Individual Flags
+        flags = state.flags
+        f.write(f"CF:{flags['CF']} PF:{flags['PF']} AF:{flags['AF']} ZF:{flags['ZF']} SF:{flags['SF']} DF:{flags['DF']} OF:{flags['OF']}\n")
+        
+        f.write("-" * 20 + "\n")
+
+        # Memory Section
+        f.write("Memory:\n")
+        if not mem:
+            f.write("  (No memory data)\n")
+        else:
+            sorted_addrs = sorted(mem.keys())
+            m_str = ""
+            for i, addr in enumerate(sorted_addrs):
+                val = mem[addr]
+                
+                # If it's a string, convert from hex (base 16)
+                # If it's already an int, use it directly
+                if isinstance(val, str):
+                    val_int = int(val, 16) 
+                else:
+                    val_int = val
+                
+                m_str += f"{addr:8X}: {val_int:02X}   "
+                
+                if (i + 1) % 4 == 0:
+                    m_str += "\n"
+            
+            f.write(m_str.rstrip() + "\n\n")

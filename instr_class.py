@@ -44,5 +44,4 @@ class DecodedInstruction:
             f"sib={hex(self.sib)}, "
             f"disp={hex(self.disp)}, "
             f"imm={hex(self.imm)})"
-            
         )

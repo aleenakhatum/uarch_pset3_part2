@@ -2,12 +2,12 @@
 Instruction count: 1
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
-opcode           : 0xb0
+opcode           : 0x4
 modrm            : 0x0
 sib              : 0x0
 disp             : 0x0
 disp_size_mux    : 0
-imm              : 0x0
+imm              : 0x10
 imm_size_mux     : 0
 eip              : 0x0
 eip_new          : 0x2
@@ -16,38 +16,6 @@ imm_type         : 00
 ========================
 === Predecode Output ===
 Instruction count: 2
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0x4
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x0
-imm_size_mux     : 0
-eip              : 0x2
-eip_new          : 0x4
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 3
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x1234
-imm_size_mux     : 1
-eip              : 0x4
-eip_new          : 0x8
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 4
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 0
 opcode           : 0x5
@@ -57,29 +25,13 @@ disp             : 0x0
 disp_size_mux    : 0
 imm              : 0x1001
 imm_size_mux     : 1
-eip              : 0x8
-eip_new          : 0xc
+eip              : 0x2
+eip_new          : 0x6
 reg0_mux         : 0
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 5
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x10000000
-imm_size_mux     : 2
-eip              : 0xc
-eip_new          : 0x11
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 6
+Instruction count: 3
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x83
@@ -89,29 +41,13 @@ disp             : 0x0
 disp_size_mux    : 0
 imm              : 0x1
 imm_size_mux     : 0
-eip              : 0x11
-eip_new          : 0x14
+eip              : 0x6
+eip_new          : 0x9
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 7
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc6
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x1000
-disp_size_mux    : 0
-imm              : 0x20
-imm_size_mux     : 0
-eip              : 0x14
-eip_new          : 0x1b
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 8
+Instruction count: 4
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x80
@@ -119,31 +55,15 @@ modrm            : 0x5
 sib              : 0x0
 disp             : 0x1000
 disp_size_mux    : 0
-imm              : 0x60
+imm              : 0x5
 imm_size_mux     : 0
-eip              : 0x1b
-eip_new          : 0x22
+eip              : 0x9
+eip_new          : 0x10
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 9
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x2000
-disp_size_mux    : 0
-imm              : 0x1234
-imm_size_mux     : 1
-eip              : 0x22
-eip_new          : 0x2b
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 10
+Instruction count: 5
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 0
 opcode           : 0x81
@@ -153,29 +73,13 @@ disp             : 0x2000
 disp_size_mux    : 0
 imm              : 0x101
 imm_size_mux     : 1
-eip              : 0x2b
-eip_new          : 0x34
+eip              : 0x10
+eip_new          : 0x19
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 11
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x2000
-disp_size_mux    : 0
-imm              : 0x12345678
-imm_size_mux     : 2
-eip              : 0x34
-eip_new          : 0x3e
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 12
+Instruction count: 6
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x83
@@ -185,29 +89,13 @@ disp             : 0x2000
 disp_size_mux    : 0
 imm              : 0x1
 imm_size_mux     : 0
-eip              : 0x3e
-eip_new          : 0x45
+eip              : 0x19
+eip_new          : 0x20
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 13
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x3000
-disp_size_mux    : 0
-imm              : 0x8000
-imm_size_mux     : 1
-eip              : 0x45
-eip_new          : 0x4e
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 14
+Instruction count: 7
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 0
 opcode           : 0x83
@@ -217,29 +105,13 @@ disp             : 0x3000
 disp_size_mux    : 0
 imm              : 0xfe
 imm_size_mux     : 0
-eip              : 0x4e
-eip_new          : 0x56
+eip              : 0x20
+eip_new          : 0x28
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 15
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x4000
-disp_size_mux    : 0
-imm              : 0x7fffffff
-imm_size_mux     : 2
-eip              : 0x56
-eip_new          : 0x60
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 16
+Instruction count: 8
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x83
@@ -249,45 +121,13 @@ disp             : 0x4000
 disp_size_mux    : 0
 imm              : 0x1
 imm_size_mux     : 0
-eip              : 0x60
-eip_new          : 0x67
+eip              : 0x28
+eip_new          : 0x2f
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 17
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb0
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x5
-imm_size_mux     : 0
-eip              : 0x67
-eip_new          : 0x69
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 18
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc6
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x5000
-disp_size_mux    : 0
-imm              : 0x3
-imm_size_mux     : 0
-eip              : 0x69
-eip_new          : 0x70
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 19
+Instruction count: 9
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x0
@@ -297,45 +137,13 @@ disp             : 0x5000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0x70
-eip_new          : 0x76
+eip              : 0x2f
+eip_new          : 0x35
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 20
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x10
-imm_size_mux     : 1
-eip              : 0x76
-eip_new          : 0x7a
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 21
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x6000
-disp_size_mux    : 0
-imm              : 0x20
-imm_size_mux     : 1
-eip              : 0x7a
-eip_new          : 0x83
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 22
+Instruction count: 10
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 0
 opcode           : 0x1
@@ -345,45 +153,13 @@ disp             : 0x6000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0x83
-eip_new          : 0x8a
+eip              : 0x35
+eip_new          : 0x3c
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 23
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x2
-imm_size_mux     : 2
-eip              : 0x8a
-eip_new          : 0x8f
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 24
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x7000
-disp_size_mux    : 0
-imm              : 0x3
-imm_size_mux     : 2
-eip              : 0x8f
-eip_new          : 0x99
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 25
+Instruction count: 11
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x1
@@ -393,45 +169,13 @@ disp             : 0x7000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0x99
-eip_new          : 0x9f
+eip              : 0x3c
+eip_new          : 0x42
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 26
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb0
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x5
-imm_size_mux     : 0
-eip              : 0x9f
-eip_new          : 0xa1
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 27
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc6
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x8000
-disp_size_mux    : 0
-imm              : 0x7
-imm_size_mux     : 0
-eip              : 0xa1
-eip_new          : 0xa8
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 28
+Instruction count: 12
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x2
@@ -441,45 +185,13 @@ disp             : 0x8000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xa8
-eip_new          : 0xae
+eip              : 0x42
+eip_new          : 0x48
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 29
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x10
-imm_size_mux     : 1
-eip              : 0xae
-eip_new          : 0xb2
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 30
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0x9000
-disp_size_mux    : 0
-imm              : 0x20
-imm_size_mux     : 1
-eip              : 0xb2
-eip_new          : 0xbb
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 31
+Instruction count: 13
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 0
 opcode           : 0x3
@@ -489,45 +201,13 @@ disp             : 0x9000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xbb
-eip_new          : 0xc2
+eip              : 0x48
+eip_new          : 0x4f
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 32
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x2
-imm_size_mux     : 2
-eip              : 0xc2
-eip_new          : 0xc7
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 33
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0xa000
-disp_size_mux    : 0
-imm              : 0x3
-imm_size_mux     : 2
-eip              : 0xc7
-eip_new          : 0xd1
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 34
+Instruction count: 14
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x3
@@ -537,13 +217,29 @@ disp             : 0xa000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xd1
-eip_new          : 0xd7
+eip              : 0x4f
+eip_new          : 0x55
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 35
+Instruction count: 15
+prefix_mux       : [0, 0, 0]
+ext_opcode       : 0
+opcode           : 0x1
+modrm            : 0x5
+sib              : 0x0
+disp             : 0xb004
+disp_size_mux    : 0
+imm              : 0x0
+imm_size_mux     : 0
+eip              : 0x55
+eip_new          : 0x5b
+reg0_mux         : 1
+imm_type         : 00
+========================
+=== Predecode Output ===
+Instruction count: 16
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 1
 opcode           : 0x6f
@@ -553,77 +249,29 @@ disp             : 0xb000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xd7
-eip_new          : 0xde
+eip              : 0x5b
+eip_new          : 0x62
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 36
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0xc000
-disp_size_mux    : 0
-imm              : 0x1234
-imm_size_mux     : 1
-eip              : 0xde
-eip_new          : 0xe7
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 37
+Instruction count: 17
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x8e
 modrm            : 0x1d
 sib              : 0x0
-disp             : 0xc000
+disp             : 0xb004
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xe7
-eip_new          : 0xed
+eip              : 0x62
+eip_new          : 0x68
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 38
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb0
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x10
-imm_size_mux     : 0
-eip              : 0xed
-eip_new          : 0xef
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 39
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xc6
-modrm            : 0x5
-sib              : 0x0
-disp             : 0xd000
-disp_size_mux    : 0
-imm              : 0x20
-imm_size_mux     : 0
-eip              : 0xef
-eip_new          : 0xf6
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 40
+Instruction count: 18
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0x86
@@ -633,61 +281,13 @@ disp             : 0xd000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0xf6
-eip_new          : 0xfc
+eip              : 0x68
+eip_new          : 0x6e
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 41
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xb8
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x10
-imm_size_mux     : 2
-eip              : 0xfc
-eip_new          : 0x101
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 42
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xc7
-modrm            : 0x5
-sib              : 0x0
-disp             : 0xe000
-disp_size_mux    : 0
-imm              : 0x10
-imm_size_mux     : 1
-eip              : 0x101
-eip_new          : 0x10a
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 43
-prefix_mux       : [0, 1, 0]
-ext_opcode       : 0
-opcode           : 0xbb
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x20
-imm_size_mux     : 1
-eip              : 0x10a
-eip_new          : 0x10e
-reg0_mux         : 0
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 44
+Instruction count: 19
 prefix_mux       : [0, 1, 0]
 ext_opcode       : 1
 opcode           : 0xb1
@@ -697,61 +297,13 @@ disp             : 0xe000
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0x10e
-eip_new          : 0x116
+eip              : 0x6e
+eip_new          : 0x76
 reg0_mux         : 1
 imm_type         : 00
 ========================
 === Predecode Output ===
-Instruction count: 45
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0xea
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x1000
-imm_size_mux     : 2
-eip              : 0x116
-eip_new          : 0x11b
-reg0_mux         : 0
-imm_type         : 10
-========================
-=== Predecode Output ===
-Instruction count: 46
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0x20
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x0
-imm_size_mux     : 0
-eip              : 0x11b
-eip_new          : 0x11d
-reg0_mux         : 1
-imm_type         : 00
-========================
-=== Predecode Output ===
-Instruction count: 47
-prefix_mux       : [0, 0, 0]
-ext_opcode       : 0
-opcode           : 0x75
-modrm            : 0x0
-sib              : 0x0
-disp             : 0x0
-disp_size_mux    : 0
-imm              : 0x5
-imm_size_mux     : 0
-eip              : 0x11d
-eip_new          : 0x11f
-reg0_mux         : 0
-imm_type         : 01
-========================
-=== Predecode Output ===
-Instruction count: 48
+Instruction count: 20
 prefix_mux       : [0, 0, 0]
 ext_opcode       : 0
 opcode           : 0xf4
@@ -761,8 +313,8 @@ disp             : 0x0
 disp_size_mux    : 0
 imm              : 0x0
 imm_size_mux     : 0
-eip              : 0x11f
-eip_new          : 0x120
+eip              : 0x76
+eip_new          : 0x77
 reg0_mux         : 0
 imm_type         : 00
 ========================

@@ -1,0 +1,20 @@
+add     al, 0x10
+add     ax, 0x1001
+add     eax, 1
+add     byte ptr [0x1000], 0x05
+add     word ptr [0x2000], 0x0101
+add     dword ptr [0x2000], 1
+add     word ptr [0x3000], -2
+add     dword ptr [0x4000], 1
+add     byte ptr [0x5000], al
+add     word ptr [0x6000], ax
+add     dword ptr [0x7000], eax
+add     al, byte ptr [0x8000]
+add     ax, word ptr [0x9000]
+add     eax, dword ptr [0xA000]
+add     dword ptr [0xB004], eax
+movq    mm0, qword ptr [0xB000]
+mov     ds, word ptr [0xB004]
+xchg    al, byte ptr [0xD000]
+cmpxchg word ptr [0xE000], bx
+hlt
